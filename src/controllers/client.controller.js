@@ -1,5 +1,4 @@
 const Client = require('../models/clientModel');
-const { updateArrays } = require('../utils/updateArraysHelper');
 const crud = require('./crudController');
 
 // Use the generic CRUD but you can extend with custom logic
