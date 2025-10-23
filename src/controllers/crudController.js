@@ -1,11 +1,10 @@
 // Generic CRUD generator for a Mongoose model
 
-const { validateSchemaKeys } = require("../utils/schemaValidator");
-const { updateArrays } = require("../utils/updateArraysHelper");
+import  { validateSchemaKeys } from "../utils/schemaValidator.js";
+import  { updateArrays } from "../utils/updateArraysHelper.js";
 
-exports.generate = (Model, options = {}) => {
+const generate = (Model, options = {}) => {
   const idField = options.idField || '_id';
-
   return {
     getAll: async (req, res) => {
     // ✅ 1. Parse filter object (if provided)
@@ -81,3 +80,4 @@ exports.generate = (Model, options = {}) => {
     }
   };
 };
+export default {generate}

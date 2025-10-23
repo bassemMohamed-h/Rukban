@@ -1,9 +1,8 @@
-const express = require('express');
-const asyncHandler = require('../middlewares/asyncHandler');
-const employeeController = require('../controllers/employee.controller');
-const { protect, authorize } = require('../middlewares/auth.middleware');
-const validateObjectId = require('../middlewares/validateObjectId');
-const { validateRoles } = require('../middlewares/validateRoles');
+import  express from 'express';
+import  asyncHandler from '../middlewares/asyncHandler.js';
+import  employeeController from '../controllers/employee.controller.js';
+import  validateObjectId from '../middlewares/validateObjectId.js';
+import  { validateRoles } from '../middlewares/validateRoles.js';
 
 const router = express.Router();
 
@@ -23,4 +22,4 @@ router.delete('/:id',
     validateObjectId,
     asyncHandler(employeeController.remove));
 
-module.exports = router;
+export default router;

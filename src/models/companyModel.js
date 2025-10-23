@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const companySchema = new mongoose.Schema({
-  name: { type: String, required: true,unique: true, trim:true},
-  email: { type: String, unique: true, trim:true },
+  companyName: { type: String, required: true,unique: true, trim:true},
+  companyEmail: { type: String, unique: true, trim:true },
   phones:[String],
   address:String,
   social:[String],
-  owners: [{ type: Types.ObjectId, ref: 'owner' }],
-  cmo: { type: Types.ObjectId, ref: 'employee' }, // reference to the employee who is CMO
+  owners: [{ type: mongoose.Types.ObjectId, ref: 'owner' }],
+  cmo: { type: mongoose.Types.ObjectId, ref: 'employee' }, // reference to the employee who is CMO
 }, { timestamps: true });
 
 
@@ -35,4 +35,4 @@ const companySchema = new mongoose.Schema({
 companySchema.set("toObject", { virtuals: true });
 companySchema.set("toJSON", { virtuals: true });
 
-module.exports = mongoose.model("company", companySchema);
+export default mongoose.model("company", companySchema);

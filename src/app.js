@@ -1,9 +1,9 @@
-require('express-async-errors');
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-const routes = require('./routes');
-const errorHandler = require('./middlewares/error.middleware');
+import ('express-async-errors');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import routes from './routes/index.js';
+import errorHandler from './middlewares/error.middleware.js';
 
 
 const app = express();
@@ -20,4 +20,4 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 // central error handler
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

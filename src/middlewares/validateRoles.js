@@ -1,5 +1,5 @@
-const roleModel = require("../models/roleModel");
-const { AppError } = require("../utils/AppError");
+import roleModel from "../models/roleModel.js";
+import { AppError } from "../utils/AppError.js";
 
 const allowedPermissions = ["read", "write", "remove", "add"];
 
@@ -9,12 +9,13 @@ const validatePermissions = (req, res, next) => {
   if(!permissions) return next();
   
   if (!Array.isArray(permissions)) throw new AppError("permissions must be array",400)
- 
   for(const obj of permissions){
-    if(!obj.values || !obj.action) throw new AppError("values and action needed",400);
-    if(!Array.isArray(obj.values)) throw new AppError("values must be array",400);
-    const invalid = obj.values.filter(p => !allowedPermissions.includes(p));
-    if (invalid.length > 0) throw new AppError("Invalid permissions.",400)
+    if(!req.method==="Post"){
+      if(!obj.values || !obj.action) throw new AppError("values and action needed",400);
+      if(!Array.isArray(obj.values)) throw new AppError("values must be array",400);
+      const invalid = obj.values.filter(p => !allowedPermissions.includes(p));
+      if (invalid.length > 0) throw new AppError("Invalid permissions.",400)
+    }
   }
   next();
 };
@@ -49,4 +50,4 @@ const validateRoles = async (req, res, next) =>{
     next(err);
   }
 }
-module.exports = {validatePermissions,validateRoles}
+export {validatePermissions,validateRoles}

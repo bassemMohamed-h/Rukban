@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Middleware factory — reusable for any param name (like :id, :employeeId, etc.)
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     const {id} = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({

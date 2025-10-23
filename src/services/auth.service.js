@@ -1,9 +1,10 @@
-const bcrypt = require("bcryptjs");
-const Employee = require("../models/employeeModel");
-const { generateToken } = require("../utils/jwt");
-const {validateSchemaKeys} = require("../utils/schemaValidator");
-const { AppError } = require("../utils/AppError");
-exports.signup = async (data) => {
+import bcrypt from "bcryptjs";
+import Employee from "../models/employeeModel.js";
+import { generateToken } from "../utils/jwt.js";
+import {validateSchemaKeys} from "../utils/schemaValidator.js";
+import { AppError } from "../utils/AppError.js";
+
+const signup = async (data) => {
   const { email, userName, password } = data;
   validateSchemaKeys(Employee.schema,data);
   // check if username active
@@ -24,7 +25,7 @@ exports.signup = async (data) => {
   return { employee,};
 };
 
-exports.signin = async (data) => {
+const signin = async (data) => {
   const { userName, password } = data;
    validateSchemaKeys(Employee.schema,data);
   const employee = await Employee.findOne({ userName });
@@ -38,3 +39,4 @@ exports.signin = async (data) => {
 
   return {token };
 };
+export default {signin,signup}

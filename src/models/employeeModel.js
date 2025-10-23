@@ -1,5 +1,4 @@
-const mongoose = require("mongoose")
-const { Schema, model , Types} = require("mongoose");
+import { Schema, model , Types} from "mongoose";
 
 const employeeSchema = new Schema({
   firstName:{ type: String, required: true,trim: true },
@@ -42,4 +41,4 @@ const employeeSchema = new Schema({
 employeeSchema.set("toObject", { virtuals: true });
 employeeSchema.set("toJSON", { virtuals: true });
 const employeeModel = model('employee', employeeSchema);
-module.exports = employeeModel;
+export default employeeModel;

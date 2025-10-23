@@ -1,8 +1,8 @@
-const crud = require("./crudController");
-const Company = require("../models/companyModel")
+import crud from "./crudController.js";
+import Company from "../models/companyModel.js"
 
 const base = crud.generate(Company);
-module.exports = {
+export default {
     create: base.create,
     getOne:base.getOne,
     getAll:base.getAll,

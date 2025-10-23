@@ -1,7 +1,7 @@
-const Role = require("../models/roleModel");
-const crud = require("./crudController");
-const roleService = require("../services/role.service.js");
-const { updateArrays } = require("../utils/updateArraysHelper.js");
+import Role from "../models/roleModel.js";
+import crud from "./crudController.js";
+import roleService from "../services/role.service.js";
+import { updateArrays } from "../utils/updateArraysHelper.js";
 
 const base = crud.generate(Role);
 const updateRole = async (req,res)=>{    
@@ -9,7 +9,7 @@ const updateRole = async (req,res)=>{
     const updatedRole = await roleService.updateRole(req.params.id, req.body);
     res.status(200).json({ success: true, data: updatedRole });
 }
-module.exports ={
+export default {
     getAll:base.getAll,
     getOne:base.getOne,
     create:base.create,

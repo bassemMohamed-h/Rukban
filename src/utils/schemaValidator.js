@@ -2,6 +2,9 @@ import { AppError } from "./AppError.js";
 
 // utils/schemaValidator.js
 export function validateSchemaKeys(schema, data) {
+  console.log(data);
+  
+  if(!data || Object.keys(data).length === 0) throw new AppError("there is no data to update",400)
     const schemaPaths = schema.paths;
     const schemaKeys = Object.keys(schemaPaths);
     const dataKeys = Object.keys(data);
@@ -11,7 +14,7 @@ export function validateSchemaKeys(schema, data) {
   const invalidKeys = dataKeys.filter(key => !schemaKeys.includes(key));
   if (invalidKeys.length > 0) {
     throw new AppError(
-      `Invalid keys detected: ${invalidKeys.join(", ")}. Data does not match schema.`
+      `Invalid keys detected: ${invalidKeys.join(", ")}. Data does not match schema.`,400
     );
   }
 

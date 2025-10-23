@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const clientSchema = new mongoose.Schema({
   clientName: { type: String, required: true },
@@ -28,4 +28,4 @@ const clientSchema = new mongoose.Schema({
 clientSchema.set("toObject", { virtuals: true });
 clientSchema.set("toJSON", { virtuals: true });
 const clientModel = mongoose.model("client", clientSchema);
-module.exports = clientModel;
+export default clientModel;

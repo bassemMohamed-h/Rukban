@@ -1,10 +1,10 @@
-const roleController = require("../controllers/roleController");
-const asyncHandler = require("../middlewares/asyncHandler");
-const validateObjectId = require("../middlewares/validateObjectId");
-const {validatePermissions} = require("../middlewares/validateRoles");
+import  express from "express";
+import  roleController from "../controllers/roleController.js";
+import  asyncHandler from "../middlewares/asyncHandler.js";
+import  validateObjectId from "../middlewares/validateObjectId.js";
+import  {validatePermissions} from "../middlewares/validateRoles.js";
 
-const router = require("express").Router();
-
+const router = express.Router();
 router.get("/",asyncHandler(roleController.getAll))
 router.get("/:id",
     validateObjectId,
@@ -25,4 +25,4 @@ router.delete("/:id",
     validateObjectId,
     asyncHandler(roleController.remove))
 
-module.exports = router;
+export default router;

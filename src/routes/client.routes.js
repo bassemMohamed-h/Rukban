@@ -1,8 +1,8 @@
-const clientController = require("../controllers/client.controller");
-const asyncHandler = require("../middlewares/asyncHandler");
-const validateObjectId = require("../middlewares/validateObjectId");
-
-const router = require("express").Router();
+import express from "express";
+import clientController from "../controllers/client.controller.js";
+import asyncHandler from "../middlewares/asyncHandler.js";
+import validateObjectId from "../middlewares/validateObjectId.js";
+const router = express.Router();
 
 router.get("/",asyncHandler(clientController.getAll));
 router.get("/:id",
@@ -22,4 +22,4 @@ router.delete("/:id",
 
 
 
-module.exports = router
+export default router

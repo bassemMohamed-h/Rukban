@@ -1,4 +1,4 @@
-module.exports = (err, req, res, next) => {
+export default (err, req, res, next) => {
   console.error(err);
 
     // If the error is a trusted AppError (e.g., validation, missing field)

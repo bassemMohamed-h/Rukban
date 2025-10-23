@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const roleSchema = new mongoose.Schema({
   name: {
@@ -32,4 +32,4 @@ roleSchema.virtual("employees", {
 roleSchema.set("toObject", { virtuals: true });
 roleSchema.set("toJSON", { virtuals: true });
 
-module.exports = mongoose.model("roleModel", roleSchema);
+export default mongoose.model("roleModel", roleSchema);

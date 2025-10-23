@@ -1,8 +1,9 @@
-const companyController = require("../controllers/company.controller");
-const asyncHandler = require("../middlewares/asyncHandler");
-const validateObjectId = require("../middlewares/validateObjectId");
+import  express from "express"
+import  companyController from "../controllers/company.controller.js";
+import  asyncHandler from "../middlewares/asyncHandler.js";
+import  validateObjectId from "../middlewares/validateObjectId.js";
 
-const router = require("express").Router();
+const router = express.Router();
 
 router.get("/",asyncHandler(companyController.getAll))
 router.get("/:id",
@@ -21,4 +22,4 @@ router.delete("/:id",
 
 
 
-module.exports = route;
+export default router;

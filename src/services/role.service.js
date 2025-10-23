@@ -1,7 +1,7 @@
-const Role = require("../models/roleModel");
-const { AppError } = require("../utils/AppError");
+import Role from "../models/roleModel.js";
+import { AppError } from "../utils/AppError.js";
 
-exports.updateRole = async (id, updateData) => {
+ const updateRole = async (id, updateData) => {
   const role = await Role.findById(id);
   if (!role) throw new AppError("Role not found",400);
 
@@ -39,3 +39,4 @@ exports.updateRole = async (id, updateData) => {
   await role.save();
   return role;
 };
+export default {updateRole}
