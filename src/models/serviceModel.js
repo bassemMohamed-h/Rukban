@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const serviceSchema = new mongoose.Schema(
   {
     name: {
@@ -34,9 +33,9 @@ const serviceSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    packages: [{ type: Types.ObjectId, ref: 'Package' }], // many-to-many
-    tasks: [{ type: Types.ObjectId, ref: 'Task' }],       // many-to-many
-    materials: [{ type: Types.ObjectId, ref: 'Material' }],// many-to-many
+    packages: [{ type: mongoose.Types.ObjectId, ref: 'Package' }], // many-to-many
+    tasks: [{ type: mongoose.Types.ObjectId, ref: 'Task' }],       // many-to-many
+    materials: [{ type: mongoose.Types.ObjectId, ref: 'Material' }],// many-to-many
     // Created & modified by users/employees
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -63,28 +62,28 @@ const serviceSchema = new mongoose.Schema(
   }
 );
 
-// Service → packages
-serviceSchema.virtual('packages', {
-  ref: 'packageModel',
-  localField: '_id',
-  foreignField: 'services'
-});
+// // Service → packages
+// serviceSchema.virtual('packages', {
+//   ref: 'packageModel',
+//   localField: '_id',
+//   foreignField: 'services'
+// });
 
-// Service → tasks
-serviceSchema.virtual('tasks', {
-  ref: 'taskModel',
-  localField: '_id',
-  foreignField: 'services'
-});
+// // Service → tasks
+// serviceSchema.virtual('tasks', {
+//   ref: 'taskModel',
+//   localField: '_id',
+//   foreignField: 'services'
+// });
 
-// Service → materials
-serviceSchema.virtual('materials', {
-  ref: 'materialModel',
-  localField: '_id',
-  foreignField: 'services'
-});
+// // Service → materials
+// serviceSchema.virtual('materials', {
+//   ref: 'materialModel',
+//   localField: '_id',
+//   foreignField: 'services'
+// });
 serviceSchema.set("toObject", { virtuals: true });
 serviceSchema.set("toJSON", { virtuals: true });
 
 const serviceModel = mongoose.model("service", serviceSchema);
-module.exports = serviceModel;
+export default serviceModel;

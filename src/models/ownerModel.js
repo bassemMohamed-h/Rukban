@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ownerSchema = new mongoose.Schema({
   name: {
@@ -8,6 +8,7 @@ const ownerSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique:true,
     trim: true,
     lowercase: true
   },
@@ -26,22 +27,21 @@ const ownerSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "userModel",
-    required: true
+    ref: "employee",
   },
   modifiedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "userModel"
+    ref: "employee"
   }
 }, { timestamps: true });
-// Owner → company
-ownerSchema.virtual('companyInfo', {
-  ref: 'companyModel',
-  localField: 'company',
-  foreignField: '_id',
-  justOne: true
-});
+// // Owner → company
+// ownerSchema.virtual('companyInfo', {
+//   ref: 'companyModel',
+//   localField: 'company',
+//   foreignField: '_id',
+//   justOne: true
+// });
 ownerSchema.set("toObject", { virtuals: true });
 ownerSchema.set("toJSON", { virtuals: true });
 
-module.exports = mongoose.model("Owner", ownerSchema);
+export default mongoose.model("owner", ownerSchema);

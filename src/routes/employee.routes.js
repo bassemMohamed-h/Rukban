@@ -22,4 +22,7 @@ router.delete('/:id',
     validateObjectId,
     asyncHandler(employeeController.remove));
 
+router.patch("/auth/signup",asyncHandler(employeeController.signup));
+router.post("/auth/signin", asyncHandler(employeeController.signin));
+
 export default router;

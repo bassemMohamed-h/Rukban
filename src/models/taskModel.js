@@ -1,11 +1,10 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema(
     {
         title: { type: String, required: true },
         description: { type: String },
-        assignedTo: { type: Types.ObjectId, ref: 'Employee', required: true }, // one employee per task
-        services: [{ type: Types.ObjectId, ref: 'Service' }], // inverse many-to-many
+        assignedTo: { type: mongoose.Types.ObjectId, ref: 'Employee', required: true }, // one employee per task
+        services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }], // inverse many-to-many
         status: { type: String, enum: ['todo','in-progress','done'], default: 'todo' },
         dueDate: { type: Date },
         priority: {
@@ -36,22 +35,22 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
-// Task → services
-taskSchema.virtual('services', {
-  ref: 'serviceModel',
-  localField: '_id',
-  foreignField: 'tasks'
-});
+// // Task → services
+// taskSchema.virtual('services', {
+//   ref: 'serviceModel',
+//   localField: '_id',
+//   foreignField: 'tasks'
+// });
 
-// Task → employee
-taskSchema.virtual('employee', {
-  ref: 'employeeModel',
-  localField: 'assignedTo',
-  foreignField: '_id',
-  justOne: true
-});
+// // Task → employee
+// taskSchema.virtual('employee', {
+//   ref: 'employeeModel',
+//   localField: 'assignedTo',
+//   foreignField: '_id',
+//   justOne: true
+// });
 taskSchema.set("toObject", { virtuals: true });
 taskSchema.set("toJSON", { virtuals: true });
 
 
-module.exports = mongoose.model("tasks", taskSchema);
+export default mongoose.model("tasks", taskSchema);
