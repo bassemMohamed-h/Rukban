@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const packagesSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  description: { type: String },
+  desc: { type: String },
   // packages can be used by many projects (project holds reference)
   services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }] // convenience, many-to-many handled on Service side too
 }, { timestamps: true });

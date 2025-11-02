@@ -2,9 +2,8 @@ import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema(
     {
         title: { type: String, required: true },
-        description: { type: String },
+        desc: { type: String },
         assignedTo: { type: mongoose.Types.ObjectId, ref: 'Employee', required: true }, // one employee per task
-        services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }], // inverse many-to-many
         status: { type: String, enum: ['todo','in-progress','done'], default: 'todo' },
         dueDate: { type: Date },
         priority: {

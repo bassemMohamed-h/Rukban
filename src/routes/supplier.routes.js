@@ -15,7 +15,7 @@ app.delete("/:id",
     validateObjectId,
     asyncHandler(supplier.remove)
 )
-app.put("/id",
+app.put("/:id",
     validateObjectId,
     asyncHandler(supplier.updateArrays)
 )

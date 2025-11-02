@@ -12,10 +12,10 @@ const ownerSchema = new mongoose.Schema({
     trim: true,
     lowercase: true
   },
-  phone: {
-    type: String,
+  phone: [{
+    type: Number,
     trim: true
-  },
+  }],
   companies: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "companyModel"

@@ -12,23 +12,26 @@ import packageRoutes from "./package.routes.js"
 import serviceRoutes from "./service.routes.js"
 import supplierRoutes from "./supplier.routes.js"
 import taskRoutes from "./task.routes.js"
+import projectRoutes from "./project.routes.js"
 
 
 
 const router = express.Router();
-router.use('/roles',roleRoutes );
-router.use('/employees', employeeRoutes);
-router.use('/clients',clientRoutes)
+router.use("/owners",ownerRoutes)
 router.use('/company',companyRoutes)
 router.use('/departments',departmentRoutes)
-router.use("/materials",materialRoutes)
-router.use("/owners",ownerRoutes)
 router.use("/teams",teamRoutes)
 router.use("/subTeams",subTeamRoutes)
-router.use("/packages",packageRoutes)
-router.use("/services",serviceRoutes)
-router.use("/suppliers",supplierRoutes)
+router.use('/employees', employeeRoutes);
+router.use('/roles',roleRoutes );
 router.use("/tasks",taskRoutes)
+router.use("/services",serviceRoutes)
+router.use("/materials",materialRoutes)
+router.use("/suppliers",supplierRoutes)
+router.use("/packages",packageRoutes)
+router.use('/projects',projectRoutes)
+router.use('/clients',clientRoutes)
+
 
 
 
