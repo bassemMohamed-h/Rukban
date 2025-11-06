@@ -2,10 +2,13 @@ import mongoose from "mongoose";
 
 const teamSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  email:{type:String, unique:true, trim:true},
   department: { type: mongoose.Types.ObjectId, ref: 'Department', required: true },
   leader: { type: mongoose.Types.ObjectId, ref: 'Employee' }, // teamLeader
   members: [{ type: mongoose.Types.ObjectId, ref: 'Employee' }], // convenience
-  subTeams: [{ type: mongoose.Types.ObjectId, ref: 'SubTeam' }]
+  subTeams: [{ type: mongoose.Types.ObjectId, ref: 'SubTeam' }],
+  createdBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' },
+  modifiedBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' }
 },
   {
     timestamps: true,

@@ -2,9 +2,12 @@ import mongoose from "mongoose";
 
 const departmentSchema = new mongoose.Schema({
   name: { type: String, required: true, unique:true},
+  email:{type:String, unique:true, trim:true},
   company: { type: mongoose.Types.ObjectId, ref: 'Company', required: true },
   manager: { type: mongoose.Types.ObjectId, ref: 'Employee' }, // depManager
   teams: [{ type: mongoose.Types.ObjectId, ref: 'Team' }],     // convenience array
+  createdBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'Employee' }
 }, { timestamps: true });
 
 // /** 🧮 Virtuals */

@@ -1,10 +1,11 @@
 import mongoose from "mongoose"
 const materialSchema = new mongoose.Schema({
   materialName: { type: String, required: true, unique:true },
-  sku:  { type: String, unique:true },
-  suppliers: [{ type: mongoose.Types.ObjectId, ref: 'Supplier' }], // many-to-many
+  desc:String,
+  supplier: { type: mongoose.Types.ObjectId, ref: 'Supplier' }, // many-to-many
   services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }],   // inverse
-  details: { type: String }
+  createdBy: {type:mongoose.Types.ObjectId, ref:"employee"},
+  modifedBy: {type:mongoose.Types.ObjectId, ref:"employee"}
 }, { timestamps: true });
 
 // // Material → services

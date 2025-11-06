@@ -1,47 +1,16 @@
 import mongoose from "mongoose";
 
-const ownerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  email: {
-    type: String,
-    unique:true,
-    trim: true,
-    lowercase: true
-  },
-  phone: [{
-    type: Number,
-    trim: true
-  }],
-  companies: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "companyModel"
-  }],
-  role: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "roleModel",
-    required: true
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "employee",
-  },
-  modifiedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "employee"
-  }
-}, { timestamps: true });
-// // Owner → company
-// ownerSchema.virtual('companyInfo', {
-//   ref: 'companyModel',
-//   localField: 'company',
-//   foreignField: '_id',
-//   justOne: true
-// });
-ownerSchema.set("toObject", { virtuals: true });
-ownerSchema.set("toJSON", { virtuals: true });
+const ownerSchema = mongoose.Schema({
+    name:{type:String, required:true, trim:true},
+    email:{type:String,required:true},
+    phones:[String],
+    role:{type:String, enum:["owner"], default:"owner"},
+    username: String,
+    password: String,
+    isActive:{type:Boolean, default:false},
+    createdBy:{type:mongoose.Types.ObjectId, ref:"owner"},
+    modifiedBy:{type:mongoose.Types.ObjectId, ref:"owner"}
+})
 
-export default mongoose.model("owner", ownerSchema);
+const ownerModel = mongoose.model("owner",ownerSchema);
+export default ownerModel

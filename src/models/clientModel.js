@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 
 const clientSchema = new mongoose.Schema({
-  clientName: { type: String, required: true },
-  contactInfo: [{ type: String, required: true }],
-  clientEmail:{type:String, unique:true},
+  name: { type: String, required: true },
+  phones: [{ type: String, required: true }],
+  email:{type:String, unique:true},
   companyName:String,
   companyCategory:{ type: String, required: true, default:"small" },
-  address:String,
-  companyPhone:[String],
+  companyAddress:String,
+  companyPhones:[String],
   projects: [{ type: mongoose.Types.ObjectId, ref: 'Project' }],
-  isActive:{type:Boolean,default:false}
+  isActive:{type:Boolean,default:false},
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'employee' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'employee' }
 },
   {
     timestamps: true,

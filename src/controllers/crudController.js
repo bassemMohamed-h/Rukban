@@ -57,7 +57,7 @@ const generate = (Model, options = {}) => {
     },
 
     create: async (req, res) => {
-      validateSchemaKeys(Model.schema, req.body);
+      //validateSchemaKeys(Model.schema, req.body);
       const created = await Model.create(req.body);
       res.status(201).json({ data: created });
     },

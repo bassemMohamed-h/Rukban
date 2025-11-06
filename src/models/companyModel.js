@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
 const companySchema = new mongoose.Schema({
-  companyName: { type: String, required: true,unique: true, trim:true},
-  companyEmail: { type: String, unique: true, trim:true },
+  name: { type: String, required: true,unique: true, trim:true},
+  email: { type: String, unique: true, trim:true },
   phones:[String],
   address:String,
-  social:[String],
-  owners: [{ type: mongoose.Types.ObjectId, ref: 'owner' }],
+  social:[{name:String, link:String}],
+  owners: [{type: mongoose.Types.ObjectId, ref: 'owner'}],
   cmo: { type: mongoose.Types.ObjectId, ref: 'employee' }, // reference to the employee who is CMO
+  createdBy:{ type: mongoose.Types.ObjectId, ref: 'employee' },
+  modifiedBy:{ type: mongoose.Types.ObjectId, ref: 'employee' }
 }, { timestamps: true });
 
 

@@ -4,7 +4,9 @@ const packagesSchema = new mongoose.Schema({
   name: { type: String, required: true },
   desc: { type: String },
   // packages can be used by many projects (project holds reference)
-  services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }] // convenience, many-to-many handled on Service side too
+  services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }], // convenience, many-to-many handled on Service side too
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'employee' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'employee' }
 }, { timestamps: true });
 
 // // Package → projects

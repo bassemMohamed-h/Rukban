@@ -1,15 +1,12 @@
-import owner from '../models/ownerModel.js';
-import crud from './crudController.js';
+import crud from "./crudController.js"
+import ownerModel from "../models/ownerModel.js"
 
-// Use the generic CRUD but you can extend with custom logic
-const base = crud.generate(owner);
+const base = crud.generate(ownerModel);
 
-export default{
-  getAll: base.getAll,
-  getOne: base.getOne,
-  create: base.create,
-  remove: base.remove,
-  updateArrays:base.updateArrays
-
-  // add extra endpoints specific to owners below
-};
+export default {
+    create:base.create,
+    remove:base.remove,
+    getOne:base.getOne,
+    getAll:base.getAll,
+    update:base.update
+}

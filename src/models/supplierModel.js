@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 const supplierSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  contactInfo: { type: String },
+  phones: [{ type: String }],
   department: { type: mongoose.Types.ObjectId, ref: 'Department', required: true }, // must belong to a department (e.g., Finance)
   materials: [{ type: mongoose.Types.ObjectId, ref: 'Material' }], // inverse many-to-many
-  deals: [{ type: mongoose.Types.ObjectId, ref: 'Project' }] // optional: supplier deals with projects if needed
+  createdBy:{ type: mongoose.Types.ObjectId, ref: 'employee' },
+  modifiedBy : { type: mongoose.Types.ObjectId, ref: 'employee' }
 }, { timestamps: true });
 // // Supplier → materials
 // supplierSchema.virtual('materials', {

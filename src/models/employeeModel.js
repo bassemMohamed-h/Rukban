@@ -8,17 +8,16 @@ const employeeSchema = new Schema({
   phones:   [String],
   address:  String  ,
   salary:   Number,
-  userName: { type: String, unique:true,trim: true },
+  username: { type: String, unique:true,trim: true },
   password: String,
   roles:    [{ type:String, ref: "roleModel" }],
-
   company:  { type: Types.ObjectId, ref: 'Company' },
-
   // membership (an employee may belong to one dept/team/subTeam or none)
   department: { type: Types.ObjectId, ref: 'Department' }, // optional
   team:       { type: Types.ObjectId, ref: 'Team' },       // optional
   subTeam:    { type: Types.ObjectId, ref: 'SubTeam' },    // optional
-
+  createdBy:  { type: Types.ObjectId, ref: 'employee' },
+  modifedBy:  { type: Types.ObjectId, ref: 'employee' },
   // tasks assigned to this employee (inverse available by query)
   // You can maintain an array for convenience, but it's redundant since Task.assignedTo exists.
   isActive: { type: Boolean, default: false }

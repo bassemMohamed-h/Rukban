@@ -39,4 +39,5 @@ import { AppError } from "../utils/AppError.js";
   await role.save();
   return role;
 };
+
 export default {updateRole}
