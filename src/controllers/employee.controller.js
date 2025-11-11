@@ -10,17 +10,5 @@ export default{
   getOne: base.getOne,
   create: base.create,
   remove: base.remove,
-  updateArrays:base.updateArrays,
-
-  // add extra endpoints specific to employees below
-  signup: async (req, res) => {
-    const result = await authService.signup(req.body);
-    res.status(201).json({ success: true, data: result });
-  },
-
-  signin: async (req, res) => {
-    const result = await authService.signin(req.body);
-    res.status(200).json({ success: true, data: result });
-  }
-  
+  updateArrays:base.updateArrays
 };

@@ -30,13 +30,6 @@ router.delete('/:id',
     asyncHandler(employeeController.remove)
 );
 
-router.patch("/auth/signup",
-    validate(updateEmployeeSchema),
-    asyncHandler(employeeController.signup)
-);
-router.post("/auth/signin", 
-    validate(updateEmployeeSchema),
-    asyncHandler(employeeController.signin)
-);
+
 
 export default router;

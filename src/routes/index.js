@@ -13,22 +13,27 @@ import serviceRoutes from "./service.routes.js"
 import supplierRoutes from "./supplier.routes.js"
 import taskRoutes from "./task.routes.js"
 import projectRoutes from "./project.routes.js"
+import authRoutes from"./auth.routes.js"
+import userRoutes from "./user.routes.js"
+import { protect} from '../middlewares/auth.middleware.js';
+
 
 const router = express.Router();
-
-router.use("/owners",ownerRoutes)
-router.use('/company',companyRoutes)
-router.use('/departments',departmentRoutes)
-router.use("/teams",teamRoutes)
-router.use("/subTeams",subTeamRoutes)
-router.use('/employees', employeeRoutes);
-router.use('/roles',roleRoutes );
-router.use("/tasks",taskRoutes)
-router.use("/services",serviceRoutes)
-router.use("/materials",materialRoutes)
-router.use("/suppliers",supplierRoutes)
-router.use("/packages",packageRoutes)
-router.use('/projects',projectRoutes)
-router.use('/clients',clientRoutes)
+router.use("/auth", authRoutes)
+router.use("/owners",       protect, ownerRoutes)
+router.use('/company',      protect, companyRoutes)
+router.use('/departments',  protect, departmentRoutes)
+router.use("/teams",        protect, teamRoutes)
+router.use("/subTeams",     protect, subTeamRoutes)
+router.use('/employees',     employeeRoutes)
+router.use('/roles',        protect, roleRoutes )
+router.use("/tasks",        protect, taskRoutes)
+router.use("/services",     protect, serviceRoutes)
+router.use("/materials",    protect, materialRoutes)
+router.use("/suppliers",    protect, supplierRoutes)
+router.use("/packages",     protect, packageRoutes)
+router.use('/projects',     protect, projectRoutes)
+router.use('/clients',      protect, clientRoutes)
+router.use("/users",         protect, userRoutes)
 
 export default router;

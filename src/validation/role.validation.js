@@ -7,7 +7,7 @@ export const createRoleSchema = Joi.object({
     permissions:Joi.array().items(baseSchema.name),
     createdBy: baseSchema.ref,
     modifiedBy: baseSchema.ref,
-    isAvtive: baseSchema.isbool
+    isActive: baseSchema.isbool
 })
 
 export const updateRoleSchema = Joi.object({
@@ -16,5 +16,5 @@ export const updateRoleSchema = Joi.object({
     permissions:Joi.array().items(baseSchema.name),
     createdBy: baseSchema.ref,
     modifiedBy: baseSchema.ref,
-    isAvtive: baseSchema.isbool
+    isActive: baseSchema.isbool
 }).min(1)

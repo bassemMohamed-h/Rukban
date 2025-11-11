@@ -1,56 +1,52 @@
 import bcrypt from "bcryptjs";
-import Employee from "../models/employeeModel.js";
 import { generateToken } from "../utils/jwt.js";
 import { AppError } from "../utils/AppError.js";
-import ownerModel from "../models/ownerModel.js";
+import employeeModel from "../models/employeeModel.js";
+import userModel from "../models/userModel.js";
 
 const signup = async (data) => {
   const { email, username, password } = data;
-  //check if it's owner
-  const isowner = await ownerModel.findOne({email},"isActive")
-  if(isowner){
-    if(isowner.isActive) throw new AppError("user already active try to signin",400)
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const owner = await ownerModel.findOneAndUpdate({email},{
-      username,
-      password:hashedPassword,
-      isActive:true
-    },{new:true,runValidators:true})
-    return owner
-  }
-  
-  
-  // check if username active
-  const existingUser = await Employee.findOne({ email },"isActive");
-  console.log(existingUser);
-  
-  if (existingUser.isActive) throw new AppError ("User already Active",400);
-
-  // hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const employee = await Employee.findOneAndUpdate({email},{
+  //check if it's already user
+  const isUser = await userModel.findOne({$or:[{username, email}]})
+  if(isUser) throw new AppError("username or email is already exist",400)
+  //check if it's employee
+  const isemployee = await employeeModel.findOne({email})
+  if(!isemployee) throw new AppError("employee doesn't exist",400)
+  // create new user
+  const user = new userModel({
     username,
-    password: hashedPassword,
-  },{new:true,runValidators:true});
-  if(!employee) throw new AppError("the email doesn't exist please contact admin",400)
-  
-  return { employee};
+    password,
+    email,
+    isActive:true,
+    employeeId:employeeModel._id,
+    roles:employeeModel.roles || null,
+    departmentId:employeeModel.department || null,
+    teamId:employeeModel.team || null,
+    subTeamId:employeeModel.subTeam || null
+  })
+  await user.save();
+  return user
 };
 
 const signin = async (data) => {
-  const { userName, password } = data;
-   //validateSchemaKeys(Employee.schema,data);
-  const employee = await Employee.findOne({ userName });
-  if (!employee) throw new AppError("User not found",400);
-  console.log(employee.title);
+  const { username, password } = data;
+  //check if it's owner
+  const owner = await ownerModel.findOne({username},"name password role");
+  const employee = await employeeModel.findOne({username},"firstname password roles");
+  console.log(owner,employee);
   
-  const isMatch = await bcrypt.compare(password, employee.password);
-  if (!isMatch) throw new AppError("Invalid credentials",400);
-
-  const token = generateToken({ id: employee._id, role: employee.roles });
-
-  return {token };
+  if(owner){    
+    const isMatchOwner = await bcrypt.compare(password, owner.password);
+    if(!isMatchOwner) {throw new AppError("Invalid credentials",400);}
+    const token = generateToken({ id: owner._id, name: owner.name, role:owner.role});
+    return {token};
+  }else if(employee){
+    const isMatchEmployee = await bcrypt.compare(password, employee.password);
+    if(!isMatchEmployee) throw new AppError("Invalid credentials",400);
+    const token = generateToken({ id: employee._id, role: employee.roles, firstname:employee.firstname });
+    return {token};
+  }else{
+    throw new AppError("user not found",400)
+  } 
 };
 export default {signin,signup}

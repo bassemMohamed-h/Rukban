@@ -1,7 +1,7 @@
 import Joi from "joi";
 export const baseSchema ={
-    name:   Joi.string().trim().min(2).max(20),
-    email:  Joi.string().email(),
+    name:   Joi.string().trim().min(2).max(20).empty(["",null]),
+    email:  Joi.string().email().empty(["", null]),
     phones: Joi.array().items(Joi.string().pattern(/^\+?[0-9]{7,15}$/))
         .messages({
             "string.pattern.base": "must be a valid Phone",
@@ -19,12 +19,14 @@ export const baseSchema ={
     isbool:     Joi.boolean(),
     username:   Joi.string()
         .pattern(/^(?!_)(?!.*__)[a-zA-Z0-9_]{3,20}(?<!_)$/)
+        .empty(["", null])
         .messages({
             "string.pattern.base":
             "Username must be 3-20 characters, only letters, numbers, or underscores, and cannot start or end with an underscore.",
         }),
 password:   Joi.string()
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    .empty(["", null])
     .messages({
         "string.pattern.base":
         "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character.",
