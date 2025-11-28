@@ -1,12 +1,24 @@
-import crudController from "./crudController.js";
+import crud from "./crudController.js";
 import taskModel from "../models/taskModel.js";
+import userModel from "../models/userModel.js";
+import serviceModel from "../models/serviceModel.js";
+import packageModel from "../models/packageModel.js";
+import projectModel from "../models/projectModel.js";
 
-const base = crudController.generate(taskModel)
+const base = crud(taskModel,"taskId",{
+    getPopulate:[{path:"assignedTo", select:"firstname lastname"}],
+    checkRef:[
+        {ModelCheck: userModel,     idToCheck:"assignedTo", },
+        {ModelCheck: serviceModel,  idToCheck:"serviceId", },
+        {ModelCheck: packageModel,  idToCheck:"packageId", },
+        {ModelCheck: projectModel,  idToCheck:"projectId", }
+    ],
+})
 
 export default {
     create: base.create,
     remove: base.remove,
     getOne: base.getOne,
     getAll: base.getAll,
-    updateArrays: base.updateArrays
+    update: base.update
 }

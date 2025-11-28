@@ -4,19 +4,11 @@ import Joi from "joi";
 export const createDepartmentSchema = Joi.object({
     name:baseSchema.name.required(),
     email:baseSchema.email,
-    company:baseSchema.ref,
-    manger:baseSchema.ref,
-    teams:Joi.array().items(baseSchema.ref),
-    createdBy:baseSchema.ref,
-    modifiedBy:baseSchema.ref
-})
+    mangerId:baseSchema.ref,
+}).options({stripUnknown:true})
 
 export const updateDepartmentSchema = Joi.object({
     name:baseSchema.name,
     email:baseSchema.email,
-    company:baseSchema.ref,
-    manger:baseSchema.ref,
-    teams:Joi.array().items(baseSchema.ref),
-    createdBy:baseSchema.ref,
-    modifiedBy:baseSchema.ref
-}).min(1)
+    mangerId:baseSchema.ref,
+}).min(1).options({stripUnknown:true})

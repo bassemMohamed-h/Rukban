@@ -1,14 +1,13 @@
 import mongoose from "mongoose";
 
 const teamSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email:{type:String, unique:true, trim:true},
-  department: { type: mongoose.Types.ObjectId, ref: 'Department', required: true },
-  leader: { type: mongoose.Types.ObjectId, ref: 'Employee' }, // teamLeader
-  members: [{ type: mongoose.Types.ObjectId, ref: 'Employee' }], // convenience
-  subTeams: [{ type: mongoose.Types.ObjectId, ref: 'SubTeam' }],
-  createdBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' },
-  modifiedBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' }
+  name:         {type: String, required: true, unique:true, trim:true },
+  email:        {type: String, required: true, unique:true, trim:true},
+  departmentId: {type: mongoose.Types.ObjectId, ref: 'department', required: true },
+  leader:       {type: mongoose.Types.ObjectId, ref: 'employee' }, // teamLeader
+  members:      [{type: mongoose.Types.ObjectId, ref: 'employee' }], // convenience
+  createdBy:    {type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy:   {type: mongoose.Types.ObjectId, ref: 'user' }
 },
   {
     timestamps: true,

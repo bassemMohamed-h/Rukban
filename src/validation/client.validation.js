@@ -11,9 +11,6 @@ export const createClientSchema = Joi.object({
     companyPhones:baseSchema.phones,
     projects:Joi.array().items(baseSchema.ref),
     isActive:baseSchema.ref,
-    createdBy: baseSchema.ref,
-    modifiedBy: baseSchema.ref
-
 })
 
 export const updateClientSchema = Joi.object({
@@ -25,7 +22,6 @@ export const updateClientSchema = Joi.object({
     companyAddress:baseSchema.desc,
     companyPhones:baseSchema.phones,
     projects:Joi.array().items(baseSchema.ref),
-    isActive:baseSchema.ref,
-    modifiedBy: baseSchema.ref
+
 
 }).min(1)

@@ -3,11 +3,9 @@ import mongoose from "mongoose";
 const departmentSchema = new mongoose.Schema({
   name: { type: String, required: true, unique:true},
   email:{type:String, unique:true, trim:true},
-  company: { type: mongoose.Types.ObjectId, ref: 'Company', required: true },
-  manager: { type: mongoose.Types.ObjectId, ref: 'Employee' }, // depManager
-  teams: [{ type: mongoose.Types.ObjectId, ref: 'Team' }],     // convenience array
-  createdBy:{ type: mongoose.Types.ObjectId, ref: 'Employee' },
-  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'Employee' }
+  managerId: { type: mongoose.Types.ObjectId, ref: 'employee' }, // depManager
+  createdBy:{ type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'user' }
 }, { timestamps: true });
 
 // /** 🧮 Virtuals */
@@ -22,7 +20,7 @@ const departmentSchema = new mongoose.Schema({
 // departmentSchema.virtual('employees', {
 //   ref: 'employeeModel',
 //   localField: '_id',
-//   foreignField: 'department'
+//   foreignField: 'departmentId'
 // });
 
 // // Department → projects

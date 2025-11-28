@@ -7,20 +7,20 @@ import { createProjectSchema, updateProjectSchema } from "../validation/project.
 const app = express.Router();
 
 app.get("/",asyncHandler(project.getAll))
-app.get("/:id",
-    validateObjectId,
+app.get("/:projectId",
+    validateObjectId("projectId"),
     asyncHandler(project.getOne)
 )
 app.post("/",
     validate(createProjectSchema),
     asyncHandler(project.create))
-app.delete("/:id",
-    validateObjectId,
+app.delete("/:projectId",
+    validateObjectId("projectId"),
     asyncHandler(project.remove)
 )
-app.put("/:id",
-    validateObjectId,
+app.put("/:projectId",
+    validateObjectId("projectId"),
     validate(updateProjectSchema),
-    asyncHandler(project.updateArrays)
+    asyncHandler(project.update)
 )
 export default app;

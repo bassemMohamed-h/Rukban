@@ -1,6 +1,7 @@
-import { Schema, model , Types} from "mongoose";
-
-const employeeSchema = new Schema({
+import mongoose from "mongoose";
+import userModel from "./userModel.js";
+import { AppError } from "../utils/AppError.js";
+const employeeSchema = new mongoose.Schema({
   firstname:{ type: String, required: true,trim: true },
   lastname: { type: String, required: true,trim: true },
   title:    {type: String, required: true,trim: true },
@@ -8,18 +9,41 @@ const employeeSchema = new Schema({
   phones:   [String],
   address:  String  ,
   salary:   Number,
-  company:  { type: Types.ObjectId, ref: 'company' },
   // membership (an employee may belong to one dept/team/subTeam or none)
-  department: { type: Types.ObjectId, ref: 'department' }, // optional
-  team:       { type: Types.ObjectId, ref: 'team' },       // optional
-  subTeam:    { type: Types.ObjectId, ref: 'subTeam' },    // optional
-  createdBy:  { type: Types.ObjectId, ref: 'employee' },
-  modifedBy:  { type: Types.ObjectId, ref: 'employee' },
-  // tasks assigned to this employee (inverse available by query)
-  // You can maintain an array for convenience, but it's redundant since Task.assignedTo exists.
-  isActive: { type: Boolean, default: false }
-}, { timestamps: true });
+  departmentId: { type: mongoose.Types.ObjectId, ref: 'department' }, // optional
+  teamId:       { type: mongoose.Types.ObjectId, ref: 'team' },       // optional
+  subTeamId:    { type: mongoose.Types.ObjectId, ref: 'subTeam' },    // optional
+  createdBy:    { type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy:   { type: mongoose.Types.ObjectId, ref: 'user' },
 
+  isActive: { type: Boolean, default: true }
+}, { timestamps: true });
+try {
+  // sync updated user data
+  const fields = ['email','departmentId','teamId','subTeamId'];
+  const update ={};
+  employeeSchema.post(["findOneAndUpdate"],async (doc)=>{
+    if(!doc) return
+    const employeeId = doc._id;
+    const userId = await userModel.findOne({employeeId}).select("_id")    
+    if(!userId) return
+    fields.forEach(Key => {
+      if(doc[Key]!== undefined) update[Key] = doc[Key]
+    });
+    if(!Object.keys(update).length) return
+    await userModel.findOneAndUpdate({_id:userId},update)  
+  })
+  // delete user when delete employee
+  employeeSchema.post(["findOneAndDelete"], async (doc)=>{
+    console.log("Deleted Employee:", doc);
+    if(!doc || !doc._id) return
+    const employeeId = doc._id;  
+    await userModel.findOneAndDelete({employeeId});    
+  })
+
+} catch (error) {
+  throw new AppError("catch erorr while sync updated user data",404)
+}
 // // Employee → tasks
 // employeeSchema.virtual('task', {
 //   ref: 'taskModel',
@@ -34,7 +58,9 @@ const employeeSchema = new Schema({
 //   foreignField: 'cmo'
 // });
 
+// update user info
+
 employeeSchema.set("toObject", { virtuals: true });
 employeeSchema.set("toJSON", { virtuals: true });
-const employeeModel = model('employee', employeeSchema);
+const employeeModel = mongoose.model('employee', employeeSchema);
 export default employeeModel;

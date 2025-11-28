@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const packagesSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique:true },
   desc: { type: String },
   // packages can be used by many projects (project holds reference)
-  services: [{ type: mongoose.Types.ObjectId, ref: 'Service' }], // convenience, many-to-many handled on Service side too
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'employee' },
-  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'employee' }
+  services: [{ type: mongoose.Types.ObjectId, ref: 'service' }], // convenience, many-to-many handled on Service side too
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'user' }
 }, { timestamps: true });
 
 // // Package → projects

@@ -10,8 +10,8 @@ const projectSchema = new mongoose.Schema({
   startDate: { type: Date },
   endDate: { type: Date },
   status: { type: String, enum: ['draft','active','completed','cancelled'], default: 'draft' },
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'employee' },
-  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'employee' }
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'user' }
 },
   {
     timestamps: true,
@@ -37,6 +37,8 @@ const projectSchema = new mongoose.Schema({
 //   localField: 'tasks',
 //   foreignField: '_id'
 // });
-projectSchema.set("toObject", { virtuals: true });
-projectSchema.set("toJSON", { virtuals: true });
-export default mongoose.model("project", projectSchema);
+// projectSchema.set("toObject", { virtuals: true });
+// projectSchema.set("toJSON", { virtuals: true });
+
+const projectModel = mongoose.model("project", projectSchema);
+export default projectModel

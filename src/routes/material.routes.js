@@ -7,21 +7,21 @@ import { createMaterialSchema, updateMaterialSchema } from "../validation/materi
 const router = express.Router();
 
 router.get("/",asyncHandler(matrialController.getAll))
-router.get("/:id",
-    validateObjectId,
-    asyncHandler(matrialController.getOne))
-
+router.get("/:materialId",
+    validateObjectId("materialId"),
+    asyncHandler(matrialController.getOne)
+)
 router.post("/",
     validate(createMaterialSchema),
-    asyncHandler(matrialController.create))
-router.delete("/:id",
-    validateObjectId,
-    asyncHandler(matrialController.remove))
-router.put("/:id",
-    validateObjectId,
+    asyncHandler(matrialController.create)
+)
+router.delete("/:materialId",
+    validateObjectId("materialId"),
+    asyncHandler(matrialController.remove)
+)
+router.put("/:materialId",
+    validateObjectId("materialId"),
     validate(updateMaterialSchema),
-    asyncHandler(matrialController.updateArrays))
-
-
-
+    asyncHandler(matrialController.update)
+)
 export default router;

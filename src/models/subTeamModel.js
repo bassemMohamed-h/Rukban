@@ -1,12 +1,13 @@
 import  mongoose  from "mongoose";
 const subTeamSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: {type:String, unique:true, trim:true},
-  team: { type: mongoose.Types.ObjectId, ref: 'Team', required: true },
-  subLeader: { type: mongoose.Types.ObjectId, ref: 'Employee' }, // subTeam leader
-  members: [{ type: mongoose.Types.ObjectId, ref: 'Employee' }],
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'Employee' },
-  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'Employee' }
+  name:         {type: String, unique:true, required: true, trim:true},
+  email:        {type:String, unique:true, required: true, trim:true},
+  teamId:       {type: mongoose.Types.ObjectId,   ref: 'team', required: true },
+  departmentId: {type: mongoose.Types.ObjectId,   ref: 'department', required: true },
+  subLeader:    {type: mongoose.Types.ObjectId,   ref: 'employee' }, // subTeam leader
+  members:      [{type: mongoose.Types.ObjectId,  ref: 'employee' }],
+  createdBy:    {type: mongoose.Types.ObjectId,   ref: 'user' },
+  modifiedBy:   {type: mongoose.Types.ObjectId,   ref: 'user' }
 }, { timestamps: true });
 
 // // SubTeam → employees
@@ -18,5 +19,5 @@ const subTeamSchema = new mongoose.Schema({
 
 subTeamSchema.set("toObject", { virtuals: true });
 subTeamSchema.set("toJSON", { virtuals: true });
-const subTeamModel = mongoose.model('SubTeam', subTeamSchema);
+const subTeamModel = mongoose.model('subTeam', subTeamSchema);
 export default subTeamModel;

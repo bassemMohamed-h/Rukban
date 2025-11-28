@@ -1,17 +1,22 @@
 import mongoose from "mongoose";
 
 const clientSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique:true },
   phones: [{ type: String, required: true }],
   email:{type:String, unique:true},
   companyName:String,
-  companyCategory:{ type: String, required: true, default:"small" },
+  companyCategory:{
+     type: String,
+     enum: ["small","medium","large"],
+     default:"small",
+     required: true
+    },
   companyAddress:String,
   companyPhones:[String],
-  projects: [{ type: mongoose.Types.ObjectId, ref: 'Project' }],
-  isActive:{type:Boolean,default:false},
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'employee' },
-  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'employee' }
+  projects: [{ type: mongoose.Types.ObjectId, ref: 'project' }],
+  isActive:{type:Boolean,default:true},
+  createdBy: { type: mongoose.Types.ObjectId, ref: 'user' },
+  modifiedBy: { type: mongoose.Types.ObjectId, ref: 'user' }
 },
   {
     timestamps: true,

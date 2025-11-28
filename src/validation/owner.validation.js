@@ -8,7 +8,7 @@ export const createOwnerSchema = joi.object({
     role:joi.string().valid("owner"),
     username:baseSchema.username,
     password:baseSchema.password,
-})
+}).options({stripUnknown:true})
 
 export const updateOwnerSchema = joi.object({
     name:baseSchema.name,
@@ -17,4 +17,4 @@ export const updateOwnerSchema = joi.object({
     role:joi.string().valid("owner"),
     username:baseSchema.username,
     password:baseSchema.password,
-}).min(1)
+}).min(1).options({stripUnknown:true})

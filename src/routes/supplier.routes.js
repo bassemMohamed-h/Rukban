@@ -5,23 +5,23 @@ import supplier from "../controllers/supplier.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { createSupplierSchema, updateSupplierSchema } from "../validation/supplier.validation.js";
 
-const app = express.Router();
+const router = express.Router();
 
-app.get("/",asyncHandler(supplier.getAll))
-app.get("/:id",
-    validateObjectId,
+router.get("/",asyncHandler(supplier.getAll))
+router.get("/:supplierId",
+    validateObjectId("supplierId"),
     asyncHandler(supplier.getOne)
 )
-app.post("/",
+router.post("/",
     validate(createSupplierSchema),
     asyncHandler(supplier.create))
-app.delete("/:id",
-    validateObjectId,
+router.delete("/:supplierId",
+    validateObjectId("supplierId"),
     asyncHandler(supplier.remove)
 )
-app.put("/:id",
-    validateObjectId,
+router.put("/:supplierId",
+    validateObjectId("supplierId"),
     validate(updateSupplierSchema),
-    asyncHandler(supplier.updateArrays)
+    asyncHandler(supplier.update)
 )
-export default app;
+export default router;

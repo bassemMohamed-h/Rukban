@@ -13,12 +13,10 @@ export const createServiceSchema = Joi.object({
   packages:Joi.array().items(baseSchema.ref),
   tasks:Joi.array().items(baseSchema.ref),
   materials: Joi.array().items(baseSchema.ref),
-  createdBy:baseSchema.ref,
-  modifiedBy:baseSchema.ref
 })
 
 export const updateServiceSchema = Joi.object({
-    name: baseSchema.name.required(),
+    name: baseSchema.name,
     desc: baseSchema.desc,
     minPrice: baseSchema.price,
     maxPrice: Joi.number().greater(Joi.ref("minPrice")).messages({
@@ -29,6 +27,4 @@ export const updateServiceSchema = Joi.object({
   packages:Joi.array().items(baseSchema.ref),
   tasks:Joi.array().items(baseSchema.ref),
   materials: Joi.array().items(baseSchema.ref),
-  createdBy:baseSchema.ref,
-  modifiedBy:baseSchema.ref
 }).min(1)

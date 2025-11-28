@@ -7,24 +7,21 @@ import { createClientSchema, updateClientSchema } from "../validation/client.val
 const router = express.Router();
 
 router.get("/",asyncHandler(clientController.getAll));
-router.get("/:id",
-    validateObjectId,
+router.get("/:clientId",
+    validateObjectId("clientId"),
     asyncHandler(clientController.getOne)
 )
-
 router.post("/",
     validate(createClientSchema),
-    asyncHandler(clientController.create));
-router.put("/:id",
-    validateObjectId,
-    validate(updateClientSchema),
-    asyncHandler(clientController.updateArrays));
-router.delete("/:id",
-    validateObjectId,
+    asyncHandler(clientController.create)
+);
+router.delete("/:clientId",
+    validateObjectId("clientId"),
     asyncHandler(clientController.remove)
 )
-
-
-
-
+router.put("/:clientId",
+    validateObjectId("clientId"),
+    validate(updateClientSchema),
+    asyncHandler(clientController.update)
+);
 export default router

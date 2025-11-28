@@ -4,21 +4,21 @@ import { baseSchema } from "./baseSchema.js";
 export const createUserSchema = Joi.object({
     username:baseSchema.name.required(),
     email:baseSchema.email.required(),
-    password:baseSchema.password().required(),
+    password:baseSchema.password.required(),
     roles:Joi.array().items(baseSchema.ref),
     employeeId:baseSchema.ref,
     departmentId:baseSchema.ref,
     teamId:baseSchema.ref,
     subTeamId:baseSchema.ref,
-})
+}).options({stripUnknown:true})
 
 export const updateUserSchema = Joi.object({
     username:baseSchema.name,
     email:baseSchema.email,
-    password:baseSchema.password(),
+    password:baseSchema.password,
     roles:Joi.array().items(baseSchema.ref),
     employee:baseSchema.ref,
-    departmentId:baseSchema.ref,
-    teamId:baseSchema.ref,
-    subTeamId:baseSchema.ref,
-}).min(1)
+    departmentId:baseSchema.ref.allow(null),
+    teamId:baseSchema.ref.allow(null),
+    subTeamId:baseSchema.ref.allow(null),
+}).min(1).options({stripUnknown:true})

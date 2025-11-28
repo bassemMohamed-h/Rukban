@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { roleCache } from "../utils/roleCache.js";
 
 // 🔸 Reusable schema for action permissions
 const actionsSchema = new mongoose.Schema({
@@ -36,13 +37,15 @@ const roleSchema = new mongoose.Schema({
     projects:     { type: actionsSchema, default: () => ({}) },
     clients:      { type: actionsSchema, default: () => ({}) },
     employees:    { type: actionsSchema, default: () => ({}) },
+    users:        { type: actionsSchema, default: () => ({}) },
+    roles:        { type: actionsSchema, default: () => ({}) },
   },
 
   // 🔸 Role restriction scope
   restrictedTo: {
     type: String,
-    enum: ["organization", "department", "team", "subTeam"],
-    default: "subTeam"
+    enum: ["organization", "department", "team", "subTeam", "user"],
+    default: "user"
   },
 
   // 🔸 Role restriction scope for spacific department
@@ -53,8 +56,8 @@ const roleSchema = new mongoose.Schema({
 },
 
   // 🔸 Audit fields
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "employee" },
-  modifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: "employee" },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  modifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 
   // 🔸 Active flag
   isActive: { type: Boolean, default: false }
@@ -71,5 +74,18 @@ roleSchema.virtual("employees", {
 // 🔸 Enable virtuals in outputs
 roleSchema.set("toObject", { virtuals: true });
 roleSchema.set("toJSON", { virtuals: true });
+
+// 🔸 Post hooks to refresh cache automatically
+roleSchema.post(["save", "findOneAndUpdate", "findOneAndDelete"], async function () {
+  try {
+    console.log(" Roles updated, refreshing cache...");
+    const Role = mongoose.model("role");
+    const allRoles = await Role.find({});
+    roleCache.set(allRoles);
+  } catch (err) {
+    console.error("Error refreshing role cache:", err);
+  }
+});
+
 
 export default mongoose.model("role", roleSchema);

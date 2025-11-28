@@ -14,8 +14,7 @@ export const createCompanySchema = Joi.object({
     social:Joi.array().items(soicalSchema),
     owner:Joi.array().items(baseSchema.ref),
     cmo:baseSchema.ref,
-    createdBy:baseSchema.ref,
-})
+}).options({stripUnknown:true})
 
 export const updateCompanySchema = Joi.object({
     name: baseSchema.name,
@@ -24,5 +23,4 @@ export const updateCompanySchema = Joi.object({
     social:Joi.array().items(soicalSchema),
     owner:Joi.array().items(baseSchema.ref),
     cmo:baseSchema.ref,
-    modifiedBy:baseSchema.ref
-}).min(1)
+}).min(1).options({stripUnknown:true})

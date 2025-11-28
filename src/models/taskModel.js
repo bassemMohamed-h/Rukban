@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema(
     {
-        title: { type: String, required: true },
-        desc: { type: String },
-        assignedTo: { type: mongoose.Types.ObjectId, ref: 'Employee', required: true }, // one employee per task
-        status: { type: String, enum: ['todo','in-progress','done'], default: 'todo' },
-        dueDate: { type: Date },
+        title:      { type: String, required: true, unique:true },
+        desc:       { type: String },
+        taskLink:   {type:String},
+        assignedTo: { type: mongoose.Types.ObjectId, ref: 'user',   required:true}, // one employee per task
+        serviceId:  {type: mongoose.Types.ObjectId, ref: 'service', required:true},
+        packageId:  {type: mongoose.Types.ObjectId, ref: 'package', required:true},
+        projectId:  {type: mongoose.Types.ObjectId, ref: 'project', required:true},
+        status:     { type: String, enum: ['todo','in-progress','done'], default: 'todo' },
+        dueDate:    { type: Date },
         priority: {
-        type: String,
-        enum: ["low", "medium", "high"],
-        default: "low",
+            type: String,
+            enum: ["low", "medium", "high"],
+            default: "low",
         },
         startDate: {
         type: Date,
@@ -20,11 +24,11 @@ const taskSchema = new mongoose.Schema(
         },
         createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "employee",
+        ref: "user",
         },
         modifiedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "employee",
+        ref: "user",
         },
     },
     {
@@ -34,13 +38,12 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
-// // Task → services
-// taskSchema.virtual('services', {
-//   ref: 'serviceModel',
-//   localField: '_id',
-//   foreignField: 'tasks'
-// });
-
+// Task → services
+taskSchema.virtual('service', {
+  ref: 'service',
+  localField: '_id',
+  foreignField: 'serviceId'
+});
 // // Task → employee
 // taskSchema.virtual('employee', {
 //   ref: 'employeeModel',
@@ -52,4 +55,4 @@ taskSchema.set("toObject", { virtuals: true });
 taskSchema.set("toJSON", { virtuals: true });
 
 
-export default mongoose.model("tasks", taskSchema);
+export default mongoose.model("task", taskSchema);

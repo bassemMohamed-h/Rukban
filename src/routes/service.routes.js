@@ -5,23 +5,23 @@ import service from "../controllers/service.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { createServiceSchema, updateServiceSchema } from "../validation/service.validation.js";
 
-const app = express.Router();
+const router = express.Router();
 
-app.get("/",asyncHandler(service.getAll))
-app.get("/:id",
-    validateObjectId,
+router.get("/",asyncHandler(service.getAll))
+router.get("/:serviceId",
+    validateObjectId("serviceId"),
     asyncHandler(service.getOne)
 )
-app.post("/",
+router.post("/",
     validate(createServiceSchema),
     asyncHandler(service.create))
-app.delete("/:id",
-    validateObjectId,
+router.delete("/:serviceId",
+    validateObjectId("serviceId"),
     asyncHandler(service.remove)
 )
-app.put("/:id",
-    validateObjectId,
+router.put("/:serviceId",
+    validateObjectId("serviceId"),
     validate(updateServiceSchema),
-    asyncHandler(service.updateArrays)
+    asyncHandler(service.update)
 )
-export default app;
+export default router;

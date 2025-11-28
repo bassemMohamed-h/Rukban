@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import materialModel from "./materialModel.js";
 const serviceSchema = new mongoose.Schema(
   {
     name: {
@@ -33,23 +34,19 @@ const serviceSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    packages: [{ type: mongoose.Types.ObjectId, ref: 'Package' }], // many-to-many
-    tasks: [{ type: mongoose.Types.ObjectId, ref: 'Task' }],       // many-to-many
-    materials: [{ type: mongoose.Types.ObjectId, ref: 'Material' }],// many-to-many
+    packages: [{ type: mongoose.Types.ObjectId,  ref: 'package' }], // many-to-many
+    tasks: [{ type: mongoose.Types.ObjectId,     ref: 'task' }],       // many-to-many
+    materials: [{ type: mongoose.Types.ObjectId, ref: 'material' }],// many-to-many
     // Created & modified by users/employees
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "employee",
-      required: false,
+      ref: "user"
     },
 
     modifiedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "employee",
-      required: false,
+      ref: "user"
     },
-
-    // Optional: mark active/inactive services
     isActive: {
       type: Boolean,
       default: true,
@@ -61,7 +58,25 @@ const serviceSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-
+// sync services to materials model 
+serviceSchema.post(["findOneAndUpdate","save"],async (doc)=>{
+  if(doc.materials){
+    await materialModel.updateMany(
+      {_id:{$in:doc.materials}},{
+      $addToSet:{services:doc._id}
+    });
+    console.log(`material Service Updated ${doc.materials}`); 
+}
+})
+serviceSchema.post("findOneAndDelete",async (doc)=>{
+  if(doc.materials?.length){
+    await materialModel.updateMany(
+      {_id:{$in:doc.materials}},{
+      $pull:{services:doc._id}
+    });
+    console.log(`material Service deleted ${doc.materials}`); 
+}
+})
 // // Service → packages
 // serviceSchema.virtual('packages', {
 //   ref: 'packageModel',
@@ -82,8 +97,8 @@ const serviceSchema = new mongoose.Schema(
 //   localField: '_id',
 //   foreignField: 'services'
 // });
-serviceSchema.set("toObject", { virtuals: true });
-serviceSchema.set("toJSON", { virtuals: true });
+// serviceSchema.set("toObject", { virtuals: true });
+// serviceSchema.set("toJSON", { virtuals: true });
 
 const serviceModel = mongoose.model("service", serviceSchema);
 export default serviceModel;

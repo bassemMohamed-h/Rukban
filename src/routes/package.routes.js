@@ -5,23 +5,24 @@ import packages from "../controllers/package.controller.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { createPackageSchema, updatePackageSchema } from "../validation/package.validation.js";
 
-const app = express.Router();
+const router = express.Router();
 
-app.get("/",asyncHandler(packages.getAll))
-app.get("/:id",
-    validateObjectId,
+router.get("/",asyncHandler(packages.getAll))
+router.get("/:packageId",
+    validateObjectId("packageId"),
     asyncHandler(packages.getOne)
 )
-app.post("/",
+router.post("/",
     validate(createPackageSchema),
-    asyncHandler(packages.create))
-app.delete("/:id",
-    validateObjectId,
+    asyncHandler(packages.create)
+)
+router.delete("/:packageId",
+    validateObjectId("packageId"),
     asyncHandler(packages.remove)
 )
-app.put("/:id",
-    validateObjectId,
+router.put("/:packageId",
+    validateObjectId("packageId"),
     validate(updatePackageSchema),
-    asyncHandler(packages.updateArrays)
+    asyncHandler(packages.update)
 )
-export default app;
+export default router;

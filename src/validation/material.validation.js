@@ -6,8 +6,6 @@ export const createMaterialSchema = Joi.object({
     desc: baseSchema.desc,
     supplier: baseSchema.ref,
     services: Joi.array().items(baseSchema.ref),
-    createdBy: baseSchema.ref,
-    modifiedBy: baseSchema.ref
 })
 
 export const updateMaterialSchema = Joi.object({
@@ -15,6 +13,4 @@ export const updateMaterialSchema = Joi.object({
     desc: baseSchema.desc,
     supplier: baseSchema.ref,
     services: Joi.array().items(baseSchema.ref),
-    createdBy: baseSchema.ref,
-    modifiedBy: baseSchema.ref
 }).min(1)

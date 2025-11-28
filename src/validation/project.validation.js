@@ -12,8 +12,6 @@ export const createProjectSchema = Joi.object({
     startDate: baseSchema.date.greater("now"),
     endDate: baseSchema.date.greater(Joi.ref("startDate")),
     status:Joi.string().valid('draft','active','completed','cancelled'),
-    createdBy:baseSchema.ref,
-    modidiedBy: baseSchema.ref
 })
 
 export const updateProjectSchema = Joi.object({
@@ -27,5 +25,4 @@ export const updateProjectSchema = Joi.object({
     startDate: baseSchema.date.greater("now"),
     endDate: baseSchema.date.greater(Joi.ref("startDate")),
     status:Joi.string().valid('draft','active','completed','cancelled'),
-    modidiedBy: baseSchema.ref
-})
+}).min(1)

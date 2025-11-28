@@ -9,10 +9,9 @@ export const createEmployeeSchema = Joi.object({
     phones:baseSchema.phones,
     address:baseSchema.desc,
     company: baseSchema.ref,
-    department: baseSchema.ref,
-    team: baseSchema.ref,
-    subTeam: baseSchema.ref,
-    createdBy: baseSchema.ref,
+    departmentId: baseSchema.ref,
+    teamId: baseSchema.ref,
+    subTeamId: baseSchema.ref,
     salary: baseSchema.price
 })
 
@@ -24,11 +23,8 @@ export const updateEmployeeSchema = Joi.object({
     phones:baseSchema.phones,
     address:baseSchema.desc,
     company: baseSchema.ref,
-    department: baseSchema.ref,
-    team: baseSchema.ref,
-    subTeam: baseSchema.ref,
-    modifiedBy: baseSchema.ref,
-    username: baseSchema.username,
-    password: baseSchema.password,
+    departmentId: baseSchema.ref,
+    teamId: baseSchema.ref,
+    subTeamId: baseSchema.ref,
     salary: baseSchema.price
 }).min(1)

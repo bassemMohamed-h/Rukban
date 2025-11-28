@@ -28,6 +28,21 @@ export default (err, req, res, next) => {
     });
   }
 
+  // Handle Token Expire erorr
+  if(err.name === "TokenExpiredError"){
+    return res.status(401).json({
+      success: false,
+      message: "TokenExpiredError"
+    })
+  }
+
+  // Handle Token Expire erorr
+  if(err.name === "JsonWebTokenError"){
+    return res.status(401).json({
+      success: false,
+      message: "JsonWebTokenError"
+    })
+  }
   // Default (generic) error
   res.status(500).json({
     success: false,

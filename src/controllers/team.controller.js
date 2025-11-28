@@ -1,11 +1,26 @@
-import crudController from "./crudController.js";
+import crud from "./crudController.js";
 import teamModel from "../models/teamModel.js";
-const base = crudController.generate(teamModel);
+import departmentModel from "../models/departmentModel.js";
+import employeeModel from "../models/employeeModel.js";
+import subTeamModel from "../models/subTeamModel.js";
+const base = crud(teamModel, "teamId",{
+    getPopulate: [
+        {path:"departmentId",   select:"name"},
+        {path:"members",        select:"firstname lastname"}
+    ],
+    checkRef:       [{ModelCheck:departmentModel, idToCheck:"departmentId"}],
+    checkRefsArray: [{ModelCheck:employeeModel,    idToCheck:"members"}],
+    restrictDelete: [
+        {ModelCheck:subTeamModel,   idToDelete:"teamId"},
+        {ModelCheck:employeeModel,  idToDelete:"teamId"}
+    ]
+});
 
 export default{
-    create: base.create,
-    remove: base.remove,
     getOne: base.getOne,
     getAll: base.getAll,
-    updateArrays:base.updateArrays
+    create: base.create,
+    update:base.update,
+    remove: base.remove,
+
 }
