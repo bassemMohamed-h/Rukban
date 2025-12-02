@@ -6,7 +6,13 @@ import packageModel from "../models/packageModel.js";
 import projectModel from "../models/projectModel.js";
 
 const base = crud(taskModel,"taskId",{
-    getPopulate:[{path:"assignedTo", select:"firstname lastname"}],
+    getPopulate:[
+        {path:"assignedTo", select:"username"},
+        {path:"serviceId",  select:"name"},
+        {path:"packageId",  select:"name"},
+        {path:"projectId",  select:"name"}
+        
+],
     checkRef:[
         {ModelCheck: userModel,     idToCheck:"assignedTo", },
         {ModelCheck: serviceModel,  idToCheck:"serviceId", },

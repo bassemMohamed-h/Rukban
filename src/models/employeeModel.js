@@ -9,15 +9,14 @@ const employeeSchema = new mongoose.Schema({
   phones:   [String],
   address:  String  ,
   salary:   Number,
-  // membership (an employee may belong to one dept/team/subTeam or none)
   departmentId: { type: mongoose.Types.ObjectId, ref: 'department' }, // optional
   teamId:       { type: mongoose.Types.ObjectId, ref: 'team' },       // optional
   subTeamId:    { type: mongoose.Types.ObjectId, ref: 'subTeam' },    // optional
   createdBy:    { type: mongoose.Types.ObjectId, ref: 'user' },
   modifiedBy:   { type: mongoose.Types.ObjectId, ref: 'user' },
-
   isActive: { type: Boolean, default: true }
-}, { timestamps: true });
+}, 
+{ timestamps: true });
 try {
   // sync updated user data
   const fields = ['email','departmentId','teamId','subTeamId'];
@@ -40,26 +39,9 @@ try {
     const employeeId = doc._id;  
     await userModel.findOneAndDelete({employeeId});    
   })
-
 } catch (error) {
   throw new AppError("catch erorr while sync updated user data",404)
 }
-// // Employee → tasks
-// employeeSchema.virtual('task', {
-//   ref: 'taskModel',
-//   localField: '_id',
-//   foreignField: 'assignedTo'
-// });
-
-// // Employee → company (reverse of company.cmo)
-// employeeSchema.virtual('company', {
-//   ref: 'companyModel',
-//   localField: '_id',
-//   foreignField: 'cmo'
-// });
-
-// update user info
-
 employeeSchema.set("toObject", { virtuals: true });
 employeeSchema.set("toJSON", { virtuals: true });
 const employeeModel = mongoose.model('employee', employeeSchema);

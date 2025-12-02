@@ -7,7 +7,7 @@ export const createTeamSchema = Joi.object({
     departmentId: baseSchema.ref.required(),
     leader: baseSchema.ref,
     members: Joi.array().items(baseSchema.ref),
-}).options({stripUnknown:true})
+})
 
 export const updateTeamSchema = Joi.object({
     name: baseSchema.name,
@@ -15,4 +15,4 @@ export const updateTeamSchema = Joi.object({
     departmentId: baseSchema.ref,
     leader: baseSchema.ref,
     members: Joi.array().items(baseSchema.ref),
-}).min(1).options({stripUnknown:true})
+}).min(1)

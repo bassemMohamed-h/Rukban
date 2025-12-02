@@ -13,4 +13,5 @@ export default {
     remove: base.remove,
     getOne: base.getOne,
     getAll: base.getAll,
+    update: base.update
 }

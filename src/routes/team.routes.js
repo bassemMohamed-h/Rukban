@@ -6,28 +6,29 @@ import {validate} from "../middlewares/validate.middleware.js"
 import {createTeamSchema, updateTeamSchema} from "../validation/team.validation.js"
 import { actions, authorize, sections } from "../middlewares/authorization.middleware.js"
 const app = express.Router();
-
 app.get("/",
-    authorize(sections.teams,actions.display),
-    asyncHandler(teamController.getAll))
+    authorize(sections.teams,[actions.display]),
+    asyncHandler(teamController.getAll)
+)
 app.get("/:teamId",
     validateObjectId("teamId"),
-    authorize(sections.teams,actions.display),
+    authorize(sections.teams,[actions.display]),
     asyncHandler(teamController.getOne)
 )
 app.post("/",
     validate(createTeamSchema),
-    authorize(sections.teams,actions.manage),
-    asyncHandler(teamController.create))
+    authorize(sections.teams,[actions.manage]),
+    asyncHandler(teamController.create)
+)
 app.delete("/:teamId",
     validateObjectId("teamId"),
-    authorize(sections.teams,actions.manage),
+    authorize(sections.teams,[actions.manage]),
     asyncHandler(teamController.remove)
 )
 app.put("/:teamId",
     validateObjectId("teamId"),
     validate(updateTeamSchema),
-    authorize(sections.teams,actions.update),
+    authorize(sections.teams,[actions.update]),
     asyncHandler(teamController.update)
 )
 export default app;

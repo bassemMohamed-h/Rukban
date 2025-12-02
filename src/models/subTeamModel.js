@@ -7,16 +7,10 @@ const subTeamSchema = new mongoose.Schema({
   subLeader:    {type: mongoose.Types.ObjectId,   ref: 'employee' }, // subTeam leader
   members:      [{type: mongoose.Types.ObjectId,  ref: 'employee' }],
   createdBy:    {type: mongoose.Types.ObjectId,   ref: 'user' },
-  modifiedBy:   {type: mongoose.Types.ObjectId,   ref: 'user' }
-}, { timestamps: true });
-
-// // SubTeam → employees
-// subTeamSchema.virtual('employees', {
-//   ref: 'employeeModel',
-//   localField: '_id',
-//   foreignField: 'subTeam'
-// });
-
+  modifiedBy:   {type: mongoose.Types.ObjectId,   ref: 'user' },
+  isActive:     {type: Boolean, default: true},
+}, 
+{ timestamps: true });
 subTeamSchema.set("toObject", { virtuals: true });
 subTeamSchema.set("toJSON", { virtuals: true });
 const subTeamModel = mongoose.model('subTeam', subTeamSchema);

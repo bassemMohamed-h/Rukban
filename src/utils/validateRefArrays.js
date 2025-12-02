@@ -3,13 +3,13 @@ import { AppError } from "./AppError.js";
 
 export const validateRefArray = async (Model, ids, fieldName) => {
   if (!Array.isArray(ids)) {
-    throw new AppError(`'${fieldName}' must be an array`);
+    throw new AppError(`'${fieldName}' must be an array`,400);
   }
 
   // Check all IDs are valid ObjectIds
   for (const id of ids) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new AppError(`Invalid ID format inside '${fieldName}'`);
+      throw new AppError(`Invalid ID format inside '${fieldName}'`,400);
     }
   }
 

@@ -11,20 +11,24 @@ const signup = async (data) => {
   if(isUser) throw new AppError("username or email is already exist",400)
   //check if it's employee
   const isEmployee = await employeeModel.findOne({email})
-  if(!isEmployee) throw new AppError("email doesn't exist",400)    
-  // create new user
-  const user = new userModel({
-    username,
-    password,
-    email,
-    isActive:true,
-    employeeId:isEmployee._id || null,
-    departmentId:isEmployee.departmentId || null,
-    teamId:isEmployee.teamId || null,
-    subTeamId:isEmployee.subTeamId|| null
-  })
-  
-  await user.save();
+  if(!isEmployee) throw new AppError("email doesn't exist",400)  
+  try {  
+    // create new user
+    const user = new userModel({
+      username,
+      password,
+      email,
+      isActive:true,
+      employeeId:isEmployee._id || null,
+      departmentId:isEmployee.departmentId || null,
+      teamId:isEmployee.teamId || null,
+      subTeamId:isEmployee.subTeamId|| null
+    })
+    await user.save(); 
+  } catch (error) {
+    console.log({error});
+    throw new AppError("erorr while signup",404)
+  }
 };
 
 const signin = async (data) => {
@@ -34,14 +38,6 @@ const signin = async (data) => {
   const isMatch= await bcrypt.compare(password, isUser.password);
   if(!isMatch) throw new AppError("Invalid credentials",401);
     const token = generateToken({
-        // username: isUser.username,
-        // email: isUser.email,
-        // roles: isUser.roles,
-        // departmentId: isUser.departmentId,
-        // teamId: isUser.teamId,
-        // subTeamId: isUser.subTeamId,
-        // isActive: isUser.isActive,
-        // employeeId:isUser.employeeId,
         _id: isUser._id,
     });
     return {token};

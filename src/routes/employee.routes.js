@@ -10,28 +10,28 @@ const router = express.Router();
 
 // Public read endpoints
 router.get('/', 
-    authorize(sections.employees,actions.display),
+    authorize(sections.employees,[actions.display]),
     asyncHandler(employeeController.getAll)
 );
 router.get('/:employeeId',
     validateObjectId("employeeId"),
-    authorize(sections.employees,actions.display),
+    authorize(sections.employees,[actions.display]),
     asyncHandler(employeeController.getOne)
 );
 router.post('/',
     validate(createEmployeeSchema),
-    authorize(sections.employees,actions.manage),
+    authorize(sections.employees,[actions.manage]),
     asyncHandler(employeeController.create)
 );
 router.delete('/:employeeId',
     validateObjectId("employeeId"),
-    authorize(sections.employees,actions.manage),
+    authorize(sections.employees,[actions.manage]),
     asyncHandler(employeeController.remove)
 );
 router.put('/:employeeId',
     validateObjectId("employeeId"),
     validate(updateEmployeeSchema),
-    authorize(sections.employees,actions.update),
+    authorize(sections.employees,[actions.update]),
     asyncHandler(employeeController.update)
 );
 export default router;

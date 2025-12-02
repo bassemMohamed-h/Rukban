@@ -8,6 +8,5 @@ export default (id) => (req, res, next) => {
         message: `Invalid ${id} format`
       });
     }
-
     next();
 };

@@ -10,7 +10,7 @@ export const createUserSchema = Joi.object({
     departmentId:baseSchema.ref,
     teamId:baseSchema.ref,
     subTeamId:baseSchema.ref,
-}).options({stripUnknown:true})
+})
 
 export const updateUserSchema = Joi.object({
     username:baseSchema.name,
@@ -21,4 +21,4 @@ export const updateUserSchema = Joi.object({
     departmentId:baseSchema.ref.allow(null),
     teamId:baseSchema.ref.allow(null),
     subTeamId:baseSchema.ref.allow(null),
-}).min(1).options({stripUnknown:true})
+}).min(1)

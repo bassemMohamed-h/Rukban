@@ -5,21 +5,21 @@ import departmentModel from "../models/departmentModel.js";
 import teamModel from "../models/teamModel.js";
 import subTeamModel from "../models/subTeamModel.js";
 import userModel from "../models/userModel.js";
-import taskModel from "../models/taskModel.js";
 
 export const protect = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return res.status(401).json({ message: 'Not Authenticated'});
+  if (!authHeader || !authHeader.startsWith(`${process.env.BEARER_TOKEN}`)) return res.status(401).json({ message: 'Not Authenticated'});
   const token = authHeader.split(' ')[1];
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET,);
+    const payload = jwt.verify(token, process.env.JWT_SECRET,);    
     if(!payload)  return res.status(401).json({ message: 'Not Authenticated' });
     const user = await userModel.findById(payload._id);
-    if(!user) return res.status(404).json("User Not Found")         
+    if(!user) return res.status(404).json({message:"User Not Found"})         
     req.user = user;
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.log({error});
+    next(error);
   }
 };
 export const sections = {
@@ -60,7 +60,7 @@ export const authorize = (section, action) => async (req, res, next) => {
     // Step 3: Get this user's roles
     const userRoles = allRoles.filter((role)=>{      
       const match = user.roles.some(rid=>String(rid)===String(role._id) && role.isActive)
-      //console.log({roleID: role._id,roleName:role.name, userRoleID:user.roles, match});
+      console.log({roleID: role._id,roleName:role.name, userRoleID:user.roles, match});
       return match     
     })
     if (!userRoles.length) return res.status(403).json ({ message:"No valid roles assigned"});

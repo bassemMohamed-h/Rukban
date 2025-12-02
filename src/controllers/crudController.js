@@ -70,7 +70,8 @@ export default (Model, id, options = {
 
         },
         getOne : async (req, res) => {
-            //check populate
+            try {
+                 //check populate
             if (Model.modelName ==="user") {
                 var pop = [
                     {path:"modifiedBy",select:"username"}
@@ -88,30 +89,40 @@ export default (Model, id, options = {
             const doc = await Model.findOne({ _id: req.params[id] }).populate(pop);
             if (!doc) return res.status(404).json({ message: 'Not found' });
             res.json({ data: doc });
+            } catch (error) {
+                console.log({error});
+                return res.status(404).json({error:"erorr while fetching data"})
+            }
+           
         },
         create : async (req, res) => {
-        // validate ref
-        if(options.checkRef?.length){
-            for(const {idToCheck,ModelCheck} of options.checkRef){
-                if(req.body[idToCheck]){
-                await validateRef(ModelCheck,req.body[idToCheck],idToCheck)
+            // validate ref
+            if(options.checkRef?.length){
+                for(const {idToCheck,ModelCheck} of options.checkRef){
+                    if(req.body[idToCheck]){
+                    await validateRef(ModelCheck,req.body[idToCheck],idToCheck)
+                    }
                 }
             }
-        }
-        // Validate array refs
-        if(options.checkRefsArray?.length){
-            for (const { idToCheck, ModelCheck } of options.checkRefsArray) {
-                if (req.body[idToCheck]) {
-                await validateRefArray(ModelCheck, req.body[idToCheck], idToCheck);
+            // Validate array refs
+            if(options.checkRefsArray?.length){
+                for (const { idToCheck, ModelCheck } of options.checkRefsArray) {
+                    if (req.body[idToCheck]) {
+                    await validateRefArray(ModelCheck, req.body[idToCheck], idToCheck);
+                    }
                 }
             }
-        }
-        const createdData = {
-            ...req.body,
-            createdBy: req.user?._id || null
-        }
-        await Model.create(createdData);
-        res.status(201).json({ message: "success"});
+            try {
+                const createdData = {
+                    ...req.body,
+                    createdBy: req.user?._id || null
+                }
+                await Model.create(createdData);
+                res.status(201).json({ message: "success"});
+            } catch (error) {
+                console.log({error});
+                return res.status(404).json({message:"erorr while create data"})
+            }
         },
         update :async (req, res) => {
             // validate ref
@@ -130,18 +141,22 @@ export default (Model, id, options = {
                     }
                 }
             }
-            const updatedData = {
-            ...req.body,
-            modifiedBy:req.user?._id || null
+            try {
+                const updatedData = {
+                ...req.body,
+                modifiedBy:req.user?._id || null
+                }
+                const updated = await Model.findByIdAndUpdate(req.params[id], updatedData,
+                    { new: true, runValidators: true, context:{employeeId: req.params[id]}});
+                if (!updated) return res.status(404).json({ message: 'Not found' });
+                res.json({ message: "success" });    
+            } catch (error) {
+                console.error({error});
+                return res.status(404).json({error:"erorr while update data"})
             }
-            const updated = await Model.findByIdAndUpdate(req.params[id], updatedData,
-                 { new: true, runValidators: true, context:{employeeId: req.params[id]}});
-            if (!updated) return res.status(404).json({ message: 'Not found' });
-            res.json({ message: "success" });
         },
         remove : async (req, res) => {
-            try {
-                 // Validate restrict delete
+            // Validate restrict delete
             if(options.restrictDelete?.length) {
                 console.log(`restricted Fired length:${options.restrictDelete.length}`);
                 for (const {ModelCheck,idToDelete} of options.restrictDelete) {
@@ -154,12 +169,13 @@ export default (Model, id, options = {
                     }
                 }
             }
-            // const removed = await Model.findOneAndDelete({_id:req.params[id]});
-            // if (!removed) return res.status(404).json({ message: 'Not found' });
+            try {
+            const removed = await Model.findOneAndDelete({_id:req.params[id]});
+            if (!removed) return res.status(404).json({ message: 'Not found' });
             res.json({ message:"success"});
             } catch (error) {
                 console.log(error);
-                res.json.status(400).json("catch erorr while remove")
+                res.json.status(400).json("erorr while remove data")
             }
            
         }

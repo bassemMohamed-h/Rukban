@@ -8,28 +8,28 @@ import { actions, authorize, sections } from "../middlewares/authorization.middl
 
 const router = express.Router();
 router.get("/",
-    authorize(sections.roles, actions.display),
+    authorize(sections.roles, [actions.display]),
     asyncHandler(roleController.getAll))
 router.get("/:roleId",
     validateObjectId("roleId"),
-    authorize(sections.roles, actions.display),
+    authorize(sections.roles, [actions.display]),
     asyncHandler(roleController.getOne))
 
 router.post("/",
     validate(createRoleSchema),
-    authorize(sections.roles, actions.manage),
+    authorize(sections.roles, [actions.manage]),
     asyncHandler(roleController.create)
 );
 
 router.delete("/:roleId",
     validateObjectId("roleId"),
-    authorize(sections.roles, actions.manage),
+    authorize(sections.roles, [actions.manage]),
     asyncHandler(roleController.remove))
 
 router.put("/:roleId",
     validateObjectId("roleId"),
     validate(updateRoleSchema),
-    authorize(sections.roles, actions.update),
+    authorize(sections.roles, [actions.update]),
     asyncHandler(roleController.update)
 );    
 

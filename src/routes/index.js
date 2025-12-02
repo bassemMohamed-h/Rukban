@@ -1,9 +1,7 @@
 import express from'express';
-import ownerRoutes from "./owner.routes.js"
 import employeeRoutes from'./employee.routes.js';
 import roleRoutes from"./role.routes.js";
 import clientRoutes from"./client.routes.js";
-import companyRoutes from"./company.routes.js";
 import departmentRoutes from "./department.routes.js"
 import materialRoutes from "./material.routes.js"
 import teamRoutes from "./team.routes.js"
@@ -19,8 +17,6 @@ import {protect} from '../middlewares/authorization.middleware.js';
 
 const router = express.Router();
 router.use("/auth",                  authRoutes)
-router.use("/owners",       protect, ownerRoutes)
-router.use('/company',      protect, companyRoutes)
 router.use('/departments',  protect, departmentRoutes)
 router.use("/teams",        protect, teamRoutes)
 router.use("/subTeams",     protect, subTeamRoutes)
@@ -34,5 +30,4 @@ router.use("/packages",     protect, packageRoutes)
 router.use('/projects',     protect, projectRoutes)
 router.use('/clients',      protect, clientRoutes)
 router.use("/users",        protect, userRoutes)
-
 export default router;

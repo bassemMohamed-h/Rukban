@@ -36,7 +36,7 @@ export const createRoleSchema = Joi.object({
     restrictedDepartment:baseSchema.ref,
     createdBy: baseSchema.ref,
     isActive: baseSchema.isbool
-}).options({stripUnknown:true})
+})
 
 export const updateRoleSchema = Joi.object({
     name:baseSchema.name,
@@ -46,4 +46,4 @@ export const updateRoleSchema = Joi.object({
     restrictedDepartment:baseSchema.ref,
     modifiedBy: baseSchema.ref,
     isActive: baseSchema.isbool
-}).min(1).options({stripUnknown:true})
+}).min(1)
