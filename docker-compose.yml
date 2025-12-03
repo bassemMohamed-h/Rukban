@@ -1,0 +1,86 @@
+services:
+  # Node.js Backend Application
+  backend:
+    build:
+      context: .
+      target: development
+    container_name: respct_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://respctUser:HelloRespct@localhost:27017/respct?authSource=admin
+    volumes:
+      # Mount source code for live reload
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      # Exclude node_modules from host
+      - /app/node_modules
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - respct_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => {if(r.statusCode !== 200) throw new Error()})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: respct_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=HelloMongoDB
+      - MONGO_INITDB_DATABASE=respct
+    volumes:
+      # Database persistence
+      - mongodb_data:/data/db
+      # Initialization scripts
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      # MongoDB config
+      - ./mongodb.conf:/etc/mongod.conf:ro
+    networks:
+      - respct_network
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://admin:HelloMongoDB@localhost:27017/respct?authSource=admin --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # MongoDB GUI (Optional - for development)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: respct_mongo_express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=HelloMongoDB
+      - ME_CONFIG_MONGODB_SERVER=localhost
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=HelloMongoDB
+    depends_on:
+      - mongodb
+    networks:
+      - respct_network
+    restart: unless-stopped
+
+# Define networks
+networks:
+  respct_network:
+    driver: bridge
+    name: respct_network
+
+# Define volumes
+volumes:
+  mongodb_data:
+    name: respct_mongodb_data
